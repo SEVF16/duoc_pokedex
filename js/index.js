@@ -14,7 +14,7 @@ tinymce.init({
     content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
     });
   
-    const pokemones = [];
+     const pokemones = [];
 
     document.querySelector("#pokemon-form").addEventListener('submit', (e)=>{
         e.preventDefault();
