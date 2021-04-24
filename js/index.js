@@ -15,6 +15,43 @@ tinymce.init({
     });
   
      const pokemones = [];
+     const cargarTabla = ()=>{
+      //1- Una referencia a la tabla 
+      let tbody = document.querySelector("#tbody-pokemon")
+      // Antes del for es limpiar la tabla paa que no se repitan 
+      tbody.innerHTML="";
+      //2- por cada pokemon generar una fila
+      for(let i=0; i < pokemones.length; ++ i){
+        let p = pokemones[i];
+        //Crea un elemento que no existe, pero no lo agrega a la pagina
+        //Puedo crear cualquier etiqueta html aqui
+        let tr = document.createElement("tr")
+         //3- Por cada atributo de los pokemon (nombre,tipo, etc) generar una celda
+        let tdNombre = document.createElement("td")
+        let tdTipo = document.createElement("td")
+        let tdDescripcion = document.createElement("td")
+        let tdNro = document.createElement("td")
+        let tdAcciones = document.createElement("td")
+
+        tdNombre.innerText = p.nombre;
+        tdTipo.innerText = p.tipo;
+        //TODO: esto no va a funcionar por mientras 
+        tdDescripcion.innerHTML = p.descripcion;
+        tdNro.innerText = i + 1;
+        //TODO: como agrego un boton para las acciones?
+        tr.appendChild(tdNro);
+        tr.appendChild(tdNombre);
+        tr.appendChild(tdTipo);
+        tr.appendChild(tdDescripcion);
+        tr.appendChild(tdAcciones);
+        tbody.appendChild(tr)
+        console.log(p);
+      }
+     
+      //4- Agregar esa fila a al tabla (Manipulando el DOM)
+
+     };
+  
 
     document.querySelector("#pokemon-form").addEventListener('submit', (e)=>{
         e.preventDefault();
@@ -30,7 +67,8 @@ tinymce.init({
         pokemon.legendario = legendario;
         pokemon.tipo = tipo;
         pokemones.push(pokemon);
-        console.log(pokemones);
 
+        cargarTabla();
+        Swal.fire("Pokemon Agregado");
 
     });
