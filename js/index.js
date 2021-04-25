@@ -15,6 +15,16 @@ tinymce.init({
     });
   
      const pokemones = [];
+     const eliminar = function(){
+      //1. saber que boto tuvo la accion
+      //this.nro
+      //2. Sacar el nro del boton
+      let nro = this.nro;
+      //3. Elimnar el pokemon de la lista
+      pokemones.splice(nro,1);
+      //4.Recagar la tabla
+      cargarTabla();
+     };
      const cargarTabla = ()=>{
       //1- Una referencia a la tabla 
       let tbody = document.querySelector("#tbody-pokemon")
@@ -34,11 +44,45 @@ tinymce.init({
         let tdAcciones = document.createElement("td")
 
         tdNombre.innerText = p.nombre;
-        tdTipo.innerText = p.tipo;
+        // TODO: MOSTRAR EL ICONO, EN VEZ DE NUMERO
+        let icono = document.createElement("i");
+        if(p.tipo == "1"){
+          //Agregar icono agua
+          //<i class="fas fa-tint"></i>
+          icono.classList.add("fas", "fa-tint", "text-primary" ,"fa-2x");
+        } else if (p.tipo == "2"){
+          //Agregar icono fuego
+          //<i class="fas fa-fire"></i>
+          icono.classList.add("fas", "fa-fire", "text-danger" ,"fa-2x");
+        }else if (p.tipo == "3"){
+          //Agregar icono planta
+          //<i class="fas fa-envira"></i>
+          icono.classList.add("fas", "fa-envira", "text-success" ,"fa-2x");
+        }else{
+          //icono de electrico
+          //<i class="fas fa-bolt"></i>
+          icono.classList.add("fas", "fa-bolt", "text-warning" ,"fa-2x");
+        }
+        
+        tdTipo.classList.add("text-center");
+        tdTipo.appendChild(icono);
+        
+
         //TODO: esto no va a funcionar por mientras 
         tdDescripcion.innerHTML = p.descripcion;
         tdNro.innerText = i + 1;
         //TODO: como agrego un boton para las acciones?
+        let boton = document.createElement("button");
+        boton.nro = i; // guardar cualquier cosa en un elemnto html
+        boton.addEventListener("click", eliminar);
+
+        boton.innerText="Enviar al profe oak"
+
+        boton.classList.add("btn","btn-danger");
+        tdAcciones.classList.add("text-center");
+        tdAcciones.appendChild(boton);
+
+
         tr.appendChild(tdNro);
         tr.appendChild(tdNombre);
         tr.appendChild(tdTipo);
@@ -69,6 +113,6 @@ tinymce.init({
         pokemones.push(pokemon);
 
         cargarTabla();
-        Swal.fire("Pokemon Agregado");
+        Swal.fire("Registro Exitoso!","Pokemon Agregado", "info");
 
     });
