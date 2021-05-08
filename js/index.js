@@ -15,15 +15,25 @@ tinymce.init({
     });
   
      const pokemones = [];
-     const eliminar = function(){
-      //1. saber que boto tuvo la accion
-      //this.nro
-      //2. Sacar el nro del boton
-      let nro = this.nro;
-      //3. Elimnar el pokemon de la lista
-      pokemones.splice(nro,1);
-      //4.Recagar la tabla
-      cargarTabla();
+     const eliminar = async function(){
+
+      let res = await Swal.fire({
+        title: "Dese enviar el pokemon al profesor oak?",
+        showCancelButton: true,
+        confirmButtonText: "Enviar!"
+      });
+      if(res.isConfirmed){
+        //1. saber que boto tuvo la accion
+        //this.nro
+        //2. Sacar el nro del boton
+        let nro = this.nro;
+        //3. Elimnar el pokemon de la lista
+        pokemones.splice(nro,1);
+        //4.Recagar la tabla
+        cargarTabla();
+      }else{
+        Swal.fire("Operacion cancelada");
+      }
      };
      const cargarTabla = ()=>{
       //1- Una referencia a la tabla 
@@ -103,8 +113,18 @@ tinymce.init({
         let descripcion = tinymce.get("descripcion-txt").getContent();
         let legendario = document.querySelector("#legendario-si").checked;
         let tipo = document.querySelector("#tipo-select").value;
-       
+       let esValido = true;
+       document.querySelector("#nombre-txt").classList.remove("is-invalid");
+      if(nombre.trim() == ""){
+        document.querySelector("#nombre-txt").classList.add("is-invalid");
+        esValido = false;
+      }
 
+      if(descripcion.trim() == ""){
+        document.querySelector("#descripcion-txt").classList.add("is-invalid");
+        esValido = false;
+      }
+      if (esValido){
         let pokemon ={};
         pokemon.nombre = nombre; 
         pokemon.descripcion = descripcion;
@@ -114,5 +134,17 @@ tinymce.init({
 
         cargarTabla();
         Swal.fire("Registro Exitoso!","Pokemon Agregado", "info");
-
+      } 
     });
+
+  document.querySelector("#limpiar-btn").addEventListener("click", ()=>{
+    //Limpiar los elementos
+    // Limpia un input text
+    document.querySelector("#nombre-txt").value="";
+    //Limpiar un tinymce
+    tinymce.get("descripcion-txt").setContent("");
+    // Limpia un radiobutton (selecionando el primera opcion)
+    document.querySelector("#legendario-si").checked = true;
+    // Limpia un select (selecionando el primer valor)
+    document.querySelector("#tipo-select").value = "1";
+  });
